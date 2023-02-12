@@ -24,19 +24,19 @@ class ResNet_18_Layer(nn.Module):
             ResBlock(hidden_shape=64),
             ResBlock(hidden_shape=64))
         
-        self.conv3_1 = ConvBlock(in_channels=64, out_channels=128, pool=True)
+        self.conv3_1 = ConvBlock(input_shape=64, output_shape=128, pool=True)
         
         self.conv3_x = nn.Sequential(
             ResBlock(hidden_shape=128),
             ResBlock(hidden_shape=128))
         
-        self.conv4_1 = ConvBlock(in_channels=128, out_channels=256, pool=True)
+        self.conv4_1 = ConvBlock(input_shape=128, output_shape=256, pool=True)
         
         self.conv4_x = nn.Sequential(
             ResBlock(hidden_shape=256),
             ResBlock(hidden_shape=256))
         
-        self.conv5_1 = ConvBlock(in_channels=256, out_channels=512, pool=True)
+        self.conv5_1 = ConvBlock(input_shape=256, output_shape=512, pool=True)
         
         self.conv5_x = nn.Sequential(
             ResBlock(hidden_shape=512),
