@@ -14,10 +14,14 @@ class ResNet_18_Layer(nn.Module):
     hidden_units: An integer indicating number of hidden units between layers.
     output_shape: An integer indicating number of output units.
   """
-    def __init__(self) -> None:
+    def __init__(self, input_shape: int=3, output_shape: int=3) -> None:
         super().__init__()
         
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=64, kernel_size=7, stride=2, padding=3)
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(in_channels=input_shape, out_channels=64, kernel_size=7, stride=2, padding=3),
+            nn.BatchNorm2d(64),
+            nn.ReLU(inplace=True)  # inplace=True - modifies the input tensor directly without the allocation of additional memory.
+        )
         
         self.conv2_x = nn.Sequential(
             nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
@@ -45,7 +49,7 @@ class ResNet_18_Layer(nn.Module):
         self.avg_pool = nn.AdaptiveAvgPool2d(output_size=1)
 
         self.classifier = nn.Sequential(
-            nn.Linear(in_features=512, out_features=3)
+            nn.Linear(in_features=512, out_features=output_shape)
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
