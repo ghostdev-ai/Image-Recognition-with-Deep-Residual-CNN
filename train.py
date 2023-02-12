@@ -3,16 +3,24 @@ Trains a PyTorch image classification model using device-agnostic code.
 """
 
 import os
+import argparse
 import torch
 from utils import data_setup, engine, model_builder, utils
 
 from torchvision import transforms
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--num_epochs", type=int, defualt=4)
+parser.add_argument("--batch_size", type=int, default=256)
+parser.add_argument("--hidden_units", type=int, defualt=64)
+parser.add_argument("--learning_rate", type=float, default=0.1)
+args = parser.parse_args()
+
 # Setup hyperparameters
-NUM_EPOCHS = 4
-BATCH_SIZE = 256
-HIDDEN_UNITS = 64
-LEARNING_RATE = 0.1  # lr is divided by 10 when the error plateaus
+NUM_EPOCHS = args.num_epochs
+BATCH_SIZE = args.batch_size
+HIDDEN_UNITS = args.hidden_units
+LEARNING_RATE = args.learning_rate  # lr is divided by 10 when the error plateaus
 
 # Setup directories
 train_dir = "data/pizza_steak_sushi/train"
