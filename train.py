@@ -5,7 +5,7 @@ Trains a PyTorch image classification model using device-agnostic code.
 import os
 import argparse
 import torch
-from utils import data_setup, engine, model_builder, utils
+from utils import data_setup, engine, model, utils
 
 from torchvision import transforms
 
@@ -44,7 +44,7 @@ train_dataloader, test_dataloader, class_names = data_setup.create_dataloaders(
 )
 
 # Create model with help from model_builder.py
-model = model_builder.ResNet_18_Layer().to(device)
+model = model.ResNet_18_Layer().to(device)
 
 # Set loss and optimizer
 loss_fn = torch.nn.CrossEntropyLoss()
