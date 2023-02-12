@@ -51,7 +51,9 @@ model = model.ResNet_18_Layer().to(device)
 # Set loss and optimizer
 loss_fn = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(),
-                             lr=LEARNING_RATE)
+                            lr=LEARNING_RATE,
+                            momentum=0.9,
+                            weight_decay=0.001)
 
 # Start training with help from engine.py
 engine.train(model=model,
