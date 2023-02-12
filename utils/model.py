@@ -42,7 +42,11 @@ class ResNet_18_Layer(nn.Module):
             ResBlock(hidden_shape=512),
             ResBlock(hidden_shape=512))
 
-        self.classifier = None
+        self.avg_pool = nn.AdaptiveAvgPool2d(output_size=1)
+
+        self.classifier = nn.Sequential(
+            nn.Linear(in_features=512, out_features=1000)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.conv1(x)
@@ -50,7 +54,8 @@ class ResNet_18_Layer(nn.Module):
         x = self.conv3_x( self.conv3_1(x) )
         x = self.conv4_x( self.conv4_1(x) )
         x = self.conv5_x( self.conv5_1(x) )
-        return x
+        x = torch.flatten(self.avg_pool(x), start_dim=1, end_dim=-1)
+        return self.classifier(x)
 
 
 class ResBlock(nn.Module):
