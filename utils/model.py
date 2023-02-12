@@ -43,7 +43,7 @@ class ResNet_18_Layer(nn.Module):
             ResBlock(hidden_shape=512))
 
         self.classifier = nn.Sequential(
-            nn.AvgPool2d(kernel_size=7, stride=7, paddiong=0),
+            nn.AvgPool2d(kernel_size=7, stride=7, padding=0),
             nn.Flatten(start_dim=1, end_dim=-1),
             nn.Linear(in_features=512, out_features=1000, bias=True)
         )
