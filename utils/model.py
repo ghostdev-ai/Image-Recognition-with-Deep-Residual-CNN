@@ -45,7 +45,7 @@ class ResNet_18_Layer(nn.Module):
         self.avg_pool = nn.AdaptiveAvgPool2d(output_size=1)
 
         self.classifier = nn.Sequential(
-            nn.Linear(in_features=512, out_features=1000)
+            nn.Linear(in_features=512, out_features=3)
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
