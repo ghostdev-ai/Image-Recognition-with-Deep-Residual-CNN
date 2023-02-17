@@ -33,8 +33,8 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Create transforms -> we will need to gather the transforms used in the inital paper
 data_transform = transforms.Compose([
-  transforms.Resize((224, 224)),
-  transforms.ToTensor()
+    transforms.Resize((224, 224)),
+    transforms.ToTensor()
 ])
 
 # Create DataLoaders with help from data_setup.py
@@ -46,7 +46,8 @@ train_dataloader, test_dataloader, class_names = data_setup.create_dataloaders(
 )
 
 # Create model with help from model_builder.py
-model = model.ResNet18().to(device)
+model = model.ResNet18(input_shape=3,
+                       output_shape=len(class_names)).to(device)
 
 # Set loss and optimizer
 loss_fn = torch.nn.CrossEntropyLoss()
@@ -68,4 +69,3 @@ engine.train(model=model,
 utils.save_model(model=model,
                  target_dir="models",
                  model_name="18_layer_resnet_model.pth")
-
