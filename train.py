@@ -58,8 +58,11 @@ optimizer = torch.optim.SGD(model.parameters(),
                             momentum=0.9,
                             weight_decay=0.0001)
 # Set up one-cycle learning rate scheduler
-scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, LEARNING_RATE, epochs=NUM_EPOCHS, 
-                                                steps_per_epoch=len(train_dataloader))
+scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, 
+                                                LEARNING_RATE, 
+                                                epochs=NUM_EPOCHS, 
+                                                steps_per_epoch=len(train_dataloader)
+                                                div_factor=10)
 
 
 # Start training with help from engine.py
