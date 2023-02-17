@@ -62,7 +62,7 @@ scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer,
                                                 LEARNING_RATE, 
                                                 epochs=NUM_EPOCHS, 
                                                 steps_per_epoch=len(train_dataloader)
-                                                div_factor=10)
+                                                div_factor=10.0)
 
 
 # Start training with help from engine.py
