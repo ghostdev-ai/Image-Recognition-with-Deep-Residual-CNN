@@ -129,11 +129,105 @@ class ResNet18(nn.Module):
         # print(f"Output Size [average pool, 1000-d fc, softmax]: {out}")
         return out
 
-    def downsample(self, input_shape, output_shape):
+    def downsample(self, input_shape: int, output_shape: int):
         return nn.Sequential(
             nn.Conv2d(in_channels=input_shape,
                       out_channels=output_shape,
                       kernel_size=3,
-                      padding=1,
-                      stride=2),
+                      stride=2,
+                      padding=1),
+            nn.BatchNorm2d(num_features=output_shape))
+
+
+class ResNet34(nn.Module):
+    def __init__(self,
+                 input_shape: int,
+                 output_shape: int
+                 ) -> None:
+        super().__init__()
+        # Output Size: 112 x 112
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(in_channels=input_shape,
+                      out_channels=64,
+                      kernel_size=7,
+                      stride=2,
+                      padding=3)
+        )
+        # Output Size: 112 x 112
+        self.conv2_x = nn.Sequential(
+            nn.MaxPool2d(kernel_size=3,
+                         stride=2,
+                         padding=1),
+            ResBlock(input_shape=64,
+                     output_shape=64),
+            ResBlock(input_shape=64,
+                     output_shape=64),
+            ResBlock(input_shape=64,
+                     output_shape=64))
+        # Output Size: 112 x 112
+        self.conv3_x = nn.Sequential(
+            ResBlock(input_shape=64,
+                     output_shape=128,
+                     stride=2,
+                     downsample=self.downsample(input_shape=64,
+                                                 output_shape=128)),
+            ResBlock(input_shape=128,
+                     output_shape=128),
+            ResBlock(input_shape=128,
+                     output_shape=128),
+            ResBlock(input_shape=128,
+                     output_shape=128))
+        # Output Size: 112 x 112
+        self.conv4_x = nn.Sequential(
+            ResBlock(input_shape=128,
+                     output_shape=256,
+                     stride=2,
+                     downsample=self.downsample(input_shape=128,
+                                                 output_shape=256)),
+            ResBlock(input_shape=256,
+                     output_shape=256),
+            ResBlock(input_shape=256,
+                     output_shape=256),
+            ResBlock(input_shape=256,
+                     output_shape=256),
+            ResBlock(input_shape=256,
+                     output_shape=256),
+            ResBlock(input_shape=256,
+                     output_shape=256))
+        # Output Size: 112 x 112
+        self.conv5_x = nn.Sequential(
+            ResBlock(input_shape=256,
+                     output_shape=512,
+                     stride=2,
+                     downsample=self.downsample(input_shape=256,
+                                                 output_shape=512)),
+            ResBlock(input_shape=512,
+                     output_shape=512),
+            ResBlock(input_shape=512,
+                     output_shape=512))
+        # Output Size: 112 x 112
+        self.avgpool = nn.AdaptiveAvgPool2d(output_size=(1, 1))
+        self.fc = nn.Linear(in_features=512,
+                             out_features=output_shape)
+
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        out = self.conv1(x)
+        out = self.conv2_x(out)
+        out = self.conv3_x(out)
+        out = self.conv4_x(out)
+        out = self.conv5_x(out)
+        out = self.avgpool(out)
+        out = torch.flatten(out, start_dim=1)
+        out = self.fc(out)
+        return out
+
+
+    def downsample(self, input_shape: int, output_shape: int) -> torch.Tensor:
+        return nn.Sequential(
+            nn.Conv2d(in_channels=input_shape,
+                      out_channels=output_shape,
+                      kernel_size=3,
+                      stride=2,
+                      padding=1),
             nn.BatchNorm2d(num_features=output_shape))

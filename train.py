@@ -13,6 +13,8 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--num_epochs", type=int, default=4)
 parser.add_argument("--batch_size", type=int, default=256)
+# instead of hidden units lets provide an option to choose the model
+# we would like to train. 
 parser.add_argument("--hidden_units", type=int, default=64)
 parser.add_argument("--learning_rate", type=float, default=0.1)
 
@@ -46,7 +48,7 @@ train_dataloader, test_dataloader, class_names = data_setup.create_dataloaders(
 )
 
 # Create model with help from model_builder.py
-model = model.ResNet18(input_shape=3,
+model = model.ResNet34(input_shape=3,
                        output_shape=len(class_names)).to(device)
 
 # Set loss and optimizer
