@@ -56,7 +56,7 @@ loss_fn = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(),
                             lr=LEARNING_RATE,
                             momentum=0.9,
-                            weight_decay=0.001)
+                            weight_decay=0.0001)
 # Set up one-cycle learning rate scheduler
 scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, LEARNING_RATE, epochs=NUM_EPOCHS, 
                                                 steps_per_epoch=len(train_dataloader))
