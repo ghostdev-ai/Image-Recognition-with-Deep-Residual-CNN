@@ -10,6 +10,7 @@ def train_step(model: torch.nn.Module,
                dataloader: torch.utils.data.DataLoader, 
                loss_fn: torch.nn.Module, 
                optimizer: torch.optim.Optimizer,
+               scheduler: torch.optim.lr_scheduler,
                device: torch.device) -> Tuple[float, float]:
   """Trains a PyTorch model for a single epoch.
 
@@ -56,6 +57,9 @@ def train_step(model: torch.nn.Module,
 
       # 5. Optimizer step
       optimizer.step()
+
+      # Update learning rate
+      scheduler.step()
 
       # Calculate and accumulate accuracy metric across all batches
       y_pred_class = torch.argmax(torch.softmax(y_pred, dim=1), dim=1)

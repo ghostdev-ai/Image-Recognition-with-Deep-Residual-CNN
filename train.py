@@ -51,12 +51,16 @@ train_dataloader, test_dataloader, class_names = data_setup.create_dataloaders(
 model = model.ResNet34(input_shape=3,
                        output_shape=len(class_names)).to(device)
 
-# Set loss and optimizer
+# Set loss and optimizer and scheduler
 loss_fn = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(),
                             lr=LEARNING_RATE,
                             momentum=0.9,
                             weight_decay=0.001)
+# Set up one-cycle learning rate scheduler
+scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, LEARNING_RATE, epochs=NUM_EPOCHS, 
+                                                steps_per_epoch=len(train_dataloader))
+
 
 # Start training with help from engine.py
 engine.train(model=model,
@@ -64,6 +68,7 @@ engine.train(model=model,
              test_dataloader=test_dataloader,
              loss_fn=loss_fn,
              optimizer=optimizer,
+             scheduler=scheduler,
              epochs=NUM_EPOCHS,
              device=device)
 

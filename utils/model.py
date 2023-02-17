@@ -111,6 +111,7 @@ class ResNet18(nn.Module):
         self.fc = nn.Linear(in_features=512,
                             out_features=output_shape)
 
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         # print(f"Output Size [X]: {x.shape}")
         out = self.conv1(x)
@@ -128,6 +129,7 @@ class ResNet18(nn.Module):
         out = self.fc(out)
         # print(f"Output Size [average pool, 1000-d fc, softmax]: {out}")
         return out
+
 
     def downsample(self, input_shape: int, output_shape: int):
         return nn.Sequential(
