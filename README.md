@@ -1,4 +1,4 @@
-# Image-Recognition-with-Deep-Residual-CNN
+# Image Recognition with Deep Residual CNN
 PyTorch implementation of Deep Residual CNNs described in the paper, [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385). This project demonstrates how one might implement a Deep Residual CNN with PyTorch.
 
 ## Deep Residual Learning Overview
